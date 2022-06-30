@@ -1,8 +1,12 @@
+import MyDocument from './MyDocument'
+import React from 'react';
+import { PDFViewer } from '@react-pdf/renderer';
 
 function App() {
   return (
-    <div className="App">
-    </div>
+    <PDFViewer>
+      <MyDocument />
+    </PDFViewer>
   );
 }
 
