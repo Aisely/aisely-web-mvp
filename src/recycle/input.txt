@@ -1,0 +1,85 @@
+<div >
+      <div className='input-labels'>
+        <div className='input-labels-col-1'>
+          <div className='input-labels-logo-wrapper'>
+            <div className='company-logo-icon'>
+              <label for='company-name'>Company Logo</label>
+              <input type='file' id='company-name' required></input>
+            </div>
+            <div className='company-name'>
+              <label for='company-name'>Company Name</label>
+              <input type='text' id='company-name' maxlength='20' placeholder='Company Name' required autoFocus></input>
+            </div>
+          </div>
+        </div>
+        <div className='input-labels-col-2'>
+          <div className='doc-type'><h1>INVOICE</h1></div>
+          <div>
+            <div className='invoice-no'>
+              <label for='invoice-no'>Invoice No.</label>
+              <input type='text' id='invoice-no' placeholder='Invoice No.' required ></input>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className='input-table'>
+        <table>
+          <tr>
+            <th>Item Description</th>
+            <th>Price</th>
+            <th>Qty.</th>
+            <th>Total</th>
+          </tr>
+          <tr>
+            <td>Software package</td>
+            <td>$99.99</td>
+            <td>1</td>
+            <td>$99.99</td>
+          </tr>
+          <tr>
+            <td>Software License</td>
+            <td>$200</td>
+            <td>1</td>
+            <td>$200</td>
+          </tr>
+        </table>
+      </div>
+      <div className='input-footer'>
+        <div className='input-footer-col-1'>
+          <div className='thank-you-remark'>
+            <p>Thank you for your business</p>
+          </div>
+          <div className='payment-info'>
+            <div>
+              <label for=''></label>
+              <input type='text' id='' placeholder='' required></input>
+            </div>
+            <div>
+              <label for=''></label>
+              <input type='text' id='' placeholder='' required></input>
+            </div>
+            <div>
+              <label for=''></label>
+              <input type='text' id='' placeholder='' required></input>
+            </div>
+          </div>
+          <div className='Terms-conditions'> 
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias earum ducimus corrupti libero accusamus culpa maxime voluptas perferendis qui quod. Ex repellat ducimus error vitae et porro aperiam odit illum?</p>
+          </div>
+        </div>
+        <div className='input-footer-col-2'>
+          <div>
+            <label for=''></label>
+            <input type='number' id='' placeholder='' required></input>
+          </div>
+          <div>
+            <label for=''></label>
+            <input type='number' id='' placeholder='' required></input>
+          </div>
+          <div>
+            <label for=''></label>
+            <input type='number' id='' placeholder='' required></input>
+          </div>
+        </div>
+      </div>
+    </div>
