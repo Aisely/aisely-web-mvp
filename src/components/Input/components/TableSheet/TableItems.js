@@ -1,27 +1,29 @@
 import React, {useState, useEffect} from 'react'
 
-function TableItems({index, item}) {
-    const [tableItem, setTableItem] = useState([])
+function TableItems({index, tableItem }) {
     const [price, setPrice] = useState(0);
     const [qty, setQty] = useState(0);
-    const [value, setValue] = useState('');
-  
+    const [total, setTotal] = useState([]);
+    const [item, setItem] = useState([]);
+
     useEffect(() => {
         const x = Number(price) * Number(qty)
-        setValue(x)
-          
+        setTotal(x)
       return () => {
           
       };
-  }, [price, qty]);
+  }, [price, qty, total]);
     
     return (
-        <tr>
-           <td>{item}<input type='text' required/></td>
-            <td><input type='number' value={price} onChange={(e) => setPrice(e.target.value)}/></td>
-            <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
-            <td>{value}</td>
-        </tr>
+        <div>
+            <tr>
+               <td>{tableItem}<input type='text' required/></td>
+                <td><input type='number' value={price} onChange={(e) => setPrice(e.target.value)}/></td>
+                <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
+                <td>{total}</td>
+            </tr>
+            {`${price}-${qty}-${total}`}
+        </div>
     )
 }
 

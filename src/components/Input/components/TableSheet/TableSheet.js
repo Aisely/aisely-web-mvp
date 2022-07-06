@@ -1,30 +1,35 @@
-import React, {useState, useEffect} from 'react'
-import styles from './tablesheet.module.css'
+import React, {useState, useEffect } from 'react'
+// import styles from './tablesheet.module.css'
 import TableItems from './TableItems'
 
 function TableSheet() {
   const [tableItem, setTableItem] = useState([1])
   const [price, setPrice] = useState(0);
   const [qty, setQty] = useState(0);
-  const [value, setValue] = useState('');
-  
-  useEffect(() => {
-          const x = Number(price) * Number(qty)
-          setValue(x)
-          
-      return () => {
+  const [total, setTotal] = useState([]);
+
+useEffect(() => {
+    const x = Number(price) * Number(qty)
+    setTotal(x)
+    // console.log(`price: ${price} qty: ${qty} total: ${total}`)
+
+  return () => {
           
       };
-  }, [price, qty]);
+  }, [price, qty, total]);
 
   const addCell = () => {
-    console.log('remove')
-    setTableItem((t) => [...t, Number(t) + 1])
+    setTableItem((t) => [...t, t + 1])
     console.log(tableItem)
   }
 
+  const generateDoc = () => {
+    
+  }
+  
   return (
     <div>
+        <button onClick={generateDoc}>GENERATE DOC</button>
       <div className=''>
       <table>
           <thead>
@@ -40,12 +45,12 @@ function TableSheet() {
             <td>{value}</td>
           </tr> */}
             {
-              tableItem.map((item, index) => {
-                return <TableItems key={index} item={item} />
+              tableItem.map((tableItem, index, setItem) => {
+                return <TableItems key={index} tableItem={tableItem} setItem={setItem}/>
               })
             }
-          <button onClick={addCell}>+</button>
         </table>
+          <button onClick={addCell}>+</button>
       </div>
     </div>
   )
