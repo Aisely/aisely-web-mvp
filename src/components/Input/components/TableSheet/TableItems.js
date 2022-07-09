@@ -22,7 +22,6 @@ function TableItems({index, tableItem }) {
                 <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
                 <td>{total}</td>
             </tr>
-            {`${price}-${qty}-${total}`}
         </div>
     )
 }
