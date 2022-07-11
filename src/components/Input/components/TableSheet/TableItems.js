@@ -4,7 +4,6 @@ function TableItems({index, tableItem }) {
     const [price, setPrice] = useState(0);
     const [qty, setQty] = useState(0);
     const [total, setTotal] = useState([]);
-    const [item, setItem] = useState([]);
 
     useEffect(() => {
         const x = Number(price) * Number(qty)
@@ -12,9 +11,13 @@ function TableItems({index, tableItem }) {
       return () => {
           
       };
-  }, [price, qty, total]);
+  }, [price, qty, total ]);
     
-    return (
+    return {
+        price,
+        qty,
+        total,
+        render: (
         <div>
             <tr>
                <td>{tableItem}<input type='text' required/></td>
@@ -23,7 +26,7 @@ function TableItems({index, tableItem }) {
                 <td>{total}</td>
             </tr>
         </div>
-    )
+    )}
 }
 
 export default TableItems
