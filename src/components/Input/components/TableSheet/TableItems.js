@@ -13,20 +13,16 @@ function TableItems({index, tableItem }) {
       };
   }, [price, qty, total ]);
     
-    return {
-        price,
-        qty,
-        total,
-        render: (
+    return (
         <div>
             <tr>
-               <td>{tableItem}<input type='text' required/></td>
+               <td><input type='text' required/></td>
                 <td><input type='number' value={price} onChange={(e) => setPrice(e.target.value)}/></td>
                 <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
                 <td>{total}</td>
             </tr>
         </div>
-    )}
+    )
 }
 
 export default TableItems

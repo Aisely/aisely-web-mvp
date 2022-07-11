@@ -3,10 +3,9 @@ import TableItems from './TableItems'
 
 function TableSheet() {
   const [tableItem, setTableItem] = useState([1]);
-  const { render, price, qty, total } = TableItems;
   // const [total, setTotal] = useState([]);
-
-
+  
+  
   //addition of price and qty
   // useEffect(() => {
   //   const x = Number(price) * Number(qty)
@@ -24,7 +23,6 @@ function TableSheet() {
   return (
     <div>
       <table>
-        {render ? render : <p>render not working</p> }
           <thead>
             <th>Item Description</th>
             <th>Price</th>
@@ -42,12 +40,5 @@ function TableSheet() {
   )
 }
 
-function DisplayContext() {
-  return (
-    <>
-      <h1>hi</h1>
-    </>
-  )
-}
 
 export default TableSheet
