@@ -1,19 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import TableItems from './TableItems'
 
 function TableSheet() {
   const [tableItem, setTableItem] = useState([1]);
-  // const [total, setTotal] = useState([]);
+  const [price, setPrice] = useState(0);
+  const [qty, setQty] = useState(0);
+  const [total, setTotal] = useState([]);
   
   
   //addition of price and qty
-  // useEffect(() => {
-  //   const x = Number(price) * Number(qty)
-  //   setTotal(x)
-  // return () => {
+  useEffect(() => {
+    const x = Number(price) * Number(qty)
+    setTotal(x)
+  return () => {
           
-  //     };
-  // }, [price, qty, total]);
+      };
+  }, [price, qty, total]);
   
   //adding a new table cell (table row)
   const addCell = () => {
@@ -29,11 +31,78 @@ function TableSheet() {
             <th>Qty.</th>
             <th>Total</th>
           </thead>
-            {
-              tableItem.map((tableItem, index, setItem) => {
-                return <TableItems key={index} tableItem={tableItem} setItem={setItem} addCell={addCell}/>
-              })
-            }
+          <tr>
+              <td><input type='text' required/></td>
+              <td><input type='number' value={price} onChange={(e) => setPrice(e.target.value)}/></td>
+              <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
+              <td>{total}</td>
+          </tr>
+          <tr>
+              <td><input type='text' required/></td>
+              <td><input type='number' value={price} onChange={(e) => setPrice(e.target.value)}/></td>
+              <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
+              <td>{total}</td>
+          </tr>
+          <tr>
+              <td><input type='text' required/></td>
+              <td><input type='number' value={price} onChange={(e) => setPrice(e.target.value)}/></td>
+              <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
+              <td>{total}</td>
+          </tr>
+          <tr>
+              <td><input type='text' required/></td>
+              <td><input type='number' value={price} onChange={(e) => setPrice(e.target.value)}/></td>
+              <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
+              <td>{total}</td>
+          </tr>
+          <tr>
+              <td><input type='text' required/></td>
+              <td><input type='number' value={price} onChange={(e) => setPrice(e.target.value)}/></td>
+              <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
+              <td>{total}</td>
+          </tr>
+          <tr>
+              <td><input type='text' required/></td>
+              <td><input type='number' value={price} onChange={(e) => setPrice(e.target.value)}/></td>
+              <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
+              <td>{total}</td>
+          </tr>
+          <tr>
+              <td><input type='text' required/></td>
+              <td><input type='number' value={price} onChange={(e) => setPrice(e.target.value)}/></td>
+              <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
+              <td>{total}</td>
+          </tr>
+          <tr>
+              <td><input type='text' required/></td>
+              <td><input type='number' value={price} onChange={(e) => setPrice(e.target.value)}/></td>
+              <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
+              <td>{total}</td>
+          </tr>
+          <tr>
+              <td><input type='text' required/></td>
+              <td><input type='number' value={price} onChange={(e) => setPrice(e.target.value)}/></td>
+              <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
+              <td>{total}</td>
+          </tr>
+          <tr>
+              <td><input type='text' required/></td>
+              <td><input type='number' value={price} onChange={(e) => setPrice(e.target.value)}/></td>
+              <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
+              <td>{total}</td>
+          </tr>
+          <tr>
+              <td><input type='text' required/></td>
+              <td><input type='number' value={price} onChange={(e) => setPrice(e.target.value)}/></td>
+              <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
+              <td>{total}</td>
+          </tr>
+          <tr>
+              <td><input type='text' required/></td>
+              <td><input type='number' value={price} onChange={(e) => setPrice(e.target.value)}/></td>
+              <td><input type='number' value={qty} onChange={(e) => setQty(e.target.value)}/></td>
+              <td>{total}</td>
+          </tr>
         </table>
         <button onClick={addCell}>+</button>
     </div>
