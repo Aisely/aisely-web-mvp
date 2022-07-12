@@ -3,17 +3,6 @@ import TableItems from './TableItems'
 
 function TableSheet() {
   const [tableItem, setTableItem] = useState([1]);
-  // const [total, setTotal] = useState([]);
-  
-  
-  //addition of price and qty
-  // useEffect(() => {
-  //   const x = Number(price) * Number(qty)
-  //   setTotal(x)
-  // return () => {
-          
-  //     };
-  // }, [price, qty, total]);
   
   //adding a new table cell (table row)
   const addCell = () => {
