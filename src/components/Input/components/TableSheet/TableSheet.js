@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { nanoid } from 'nanoid'
 
 function TableItems({ index, tableItem, onChangeItem }) {
   return (
@@ -74,7 +75,7 @@ function TableSheet() {
         {tableItem.map((tableItem, index) => {
           return (
             <TableItems
-              // key={}
+              // key={key}
               index={index}
               tableItem={tableItem}
               onChangeItem={onChangeItem}
