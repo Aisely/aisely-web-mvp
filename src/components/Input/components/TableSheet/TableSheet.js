@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 import TableItems from './TableItems'
 
 function TableSheet() {
-  const [tableItem, setTableItem] = useState([1]);
-  const [item, setItem] = useState('')
   const [price, setPrice] = useState(0);
   const [qty, setQty] = useState(0);
   const [total, setTotal] = useState([]);
@@ -20,7 +18,6 @@ function TableSheet() {
   
   //adding a new table cell (table row)
   const addCell = () => {
-    setTableItem((t) => [...t, t + 1])
   }
 
   return (
