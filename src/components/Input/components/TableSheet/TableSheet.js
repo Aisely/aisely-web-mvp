@@ -1,7 +1,10 @@
-import React, { useState } from "react";
-import { nanoid } from 'nanoid'
+import React, { useEffect, useState, useRef } from "react";
+import { nanoid } from "nanoid";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../../../../firebase";
 
 function TableItems({ index, tableItem, onChangeItem }) {
+  // Add a new document with a generated id.
   return (
     <>
       <tr>
@@ -32,30 +35,52 @@ function TableSheet() {
   const [tableItem, setTableItem] = useState([
     {
       price: 0,
-      quantity: 0
-    }
+      quantity: 0,
+    },
   ]);
+  const val = useRef(false) //preventing useEffect for the addData function to render in 
 
   const onChangeItem = (index, type, value) => {
     const newTable = tableItem.map((item, idx) => {
       if (idx === index)
         return {
           ...item,
-          [type]: value
+          [type]: value,
         };
       return item;
     });
     setTableItem(newTable);
   };
 
+  useEffect(() => {
+    if (val.current){
+      
+      async function addData() {
+        const docRef = await addDoc(collection(db, "cities"), {
+          name: "Tokyo",
+          country: "Japan",
+        });
+      }
+      try {
+        addData()
+        console.log('added data success')
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      val.current = true
+    }
+  }, [tableItem.length]);
+  console.log(tableItem.length)
   const addCell = () => {
     setTableItem((t) => [
       ...t,
       {
         price: 0,
-        quantity: 0
-      }
+        quantity: 0,
+      },
     ]);
+    console.log(val)
   };
 
   const totalPrice = tableItem.reduce((acc, cur) => {
@@ -83,7 +108,7 @@ function TableSheet() {
           );
         })}
       </table>
-      <button onClick={addCell}>+</button>
+      <button onClick={addCell}>add new item +</button>
       <div>Total: {totalPrice}</div>
     </div>
   );
