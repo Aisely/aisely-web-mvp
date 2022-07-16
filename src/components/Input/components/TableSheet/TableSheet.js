@@ -4,15 +4,17 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../../../firebase";
 
 function TableItems({ index, tableItem, onChangeItem }) {
-  // Add a new document with a generated id.
   return (
     <>
       <tr>
         <td>
-          <input type="text" required />
+          <input 
+          style={{width:"50px"}}
+          type="text" required />
         </td>
         <td>
           <input
+            style={{width:"50px"}}
             type="number"
             value={tableItem.price}
             onChange={(e) => onChangeItem(index, "price", e.target.value)}
@@ -20,6 +22,7 @@ function TableItems({ index, tableItem, onChangeItem }) {
         </td>
         <td>
           <input
+            style={{width:"50px"}}
             type="number"
             value={tableItem.quantity}
             onChange={(e) => onChangeItem(index, "quantity", e.target.value)}
@@ -32,46 +35,46 @@ function TableItems({ index, tableItem, onChangeItem }) {
 }
 
 function TableSheet() {
+  const [id, setId] = useState([])
   const [tableItem, setTableItem] = useState([
-    {
-      price: 0,
-      quantity: 0,
-    },
+    // {
+    //   price: 0,
+    //   quantity: 0,
+    // },
   ]);
-  const val = useRef(false) //preventing useEffect for the addData function to render in 
+  const val = useRef(false); //preventing useEffect for the addData function to render in
 
   const onChangeItem = (index, type, value) => {
     const newTable = tableItem.map((item, idx) => {
       if (idx === index)
-        return {
-          ...item,
-          [type]: value,
-        };
+      return {
+        ...item,
+        [type]: value,
+      };
       return item;
     });
     setTableItem(newTable);
   };
 
-  useEffect(() => {
-    if (val.current){
-      
-      async function addData() {
-        const docRef = await addDoc(collection(db, "cities"), {
-          name: "Tokyo",
-          country: "Japan",
-        });
-      }
-      try {
-        addData()
-        console.log('added data success')
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      val.current = true
-    }
-  }, [tableItem.length]);
-  console.log(tableItem.length)
+  // useEffect(() => {
+  //   if (val.current) {
+  //     async function addData() {
+  //       const docRef = await addDoc(collection(db, "cities"), {
+  //         name: "Tokyo",
+  //         country: "Japan",
+  //       });
+  //     }
+  //     try {
+  //       addData();
+  //       console.log("added data success");
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   } else {
+  //     val.current = true;
+  //   }
+  // }, [tableItem.length]);
+
   const addCell = () => {
     setTableItem((t) => [
       ...t,
@@ -80,8 +83,45 @@ function TableSheet() {
         quantity: 0,
       },
     ]);
-    console.log(val)
+    // const lastItem = tableItem[tableItem.length - 1]
+    // console.log(lastItem.price)
+    setId((t) => [
+      ...t,
+      nanoid()
+    ])
   };
+
+  useEffect(() => {
+    const dbItems = tableItem.map((item, index) => ({
+        ...item,
+        index,
+        price: item.price,
+        quantity: item.quantity,
+        total: item.price * item.quantity,
+    }))
+    console.log('item added', dbItems)
+    if (val.current) {
+          async function addData() {
+            const docRef = await addDoc(collection(db, "cities"), {
+              index: dbItems[dbItems.length - 1].index,
+              price: dbItems[dbItems.length - 1].price,
+              quantity: dbItems[dbItems.length - 1].quantity,
+              total: dbItems[dbItems.length - 1].total,
+            });
+            console.log(docRef)
+          }
+          try {
+            addData();
+            console.log("added data success");
+          } catch (error) {
+            console.log(error);
+          }
+        } else {
+          val.current = true;
+          console.log('e no run')
+        }
+  }, [tableItem.length])
+  
 
   const totalPrice = tableItem.reduce((acc, cur) => {
     acc += Number(cur.price) * Number(cur.quantity);
@@ -90,7 +130,7 @@ function TableSheet() {
 
   return (
     <div>
-      <table>
+      <table style={{width:"100vw", border: "1px solid black"}}>
         <thead>
           <th>Item Description</th>
           <th>Price</th>
@@ -100,7 +140,6 @@ function TableSheet() {
         {tableItem.map((tableItem, index) => {
           return (
             <TableItems
-              // key={key}
               index={index}
               tableItem={tableItem}
               onChangeItem={onChangeItem}
