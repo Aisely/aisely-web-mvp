@@ -14,7 +14,7 @@ return (
             style={{ width: "50px" }} 
             type="text"
             required 
-            onChange={(e) => onChangeInput(index, e.target.value)}
+            onChange={(e) => onChangeItem(index, "product", e.target.value)}
             onBlur={(e) => onChangeInput(index, e.target.value)}
           />
         </td>
@@ -55,10 +55,9 @@ function TableSheet() {
 
   const onChangeInput = (index, value) => {
   if (document.activeElement === inputProduct.current) {
-    setProduct((t) => [...t, value])
+    // setProduct((t) => [...t, value])
+    console.log(index)
   } else {
-    const i = product[product.length - 1]
-    console.log(i)
   }
   }
 
@@ -73,6 +72,7 @@ function TableSheet() {
     await updateDoc(ref, {
       quantity: value,
       price: value,
+      product: value,
     });
   };
 
@@ -90,6 +90,7 @@ function TableSheet() {
     setTableItem(newTable);
     updateWithNewTable(index);
   };
+  console.log(tableItem)
 
   //add a new item(new table row)
   const addCell = () => {
@@ -117,15 +118,16 @@ function TableSheet() {
     if (val.current) {
       async function addData() {
         const id = dbItems[dbItems.length - 1].index;
+        const x = dbItems[dbItems.length - 1];
         await setDoc(doc(db, "invoice", id.toString()), {
-          index: dbItems[dbItems.length - 1].index,
-          product: dbItems[dbItems.length - 1].product,
-          price: dbItems[dbItems.length - 1].price,
-          quantity: dbItems[dbItems.length - 1].quantity,
-          total: dbItems[dbItems.length - 1].total,
+          index: x.index,
+          product: x.product,
+          price: x.price,
+          quantity: x.quantity,
+          total: x.total,
         });
       }
-      // addData();
+      addData();
       try {
         console.log("added data success");
       } catch (error) {
