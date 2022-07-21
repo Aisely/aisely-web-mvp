@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { nanoid } from "nanoid";
-import { collection, addDoc, updateDoc, setDoc, doc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../../../../firebase";
 
 function TableItems({ index, tableItem, onChangeItem , inputProduct, onChangeInput}) {
@@ -68,17 +68,16 @@ function TableSheet() {
     } else {
       var price = type;
     }
-    const ref = doc(db, "invoice", index.toString());
-    await updateDoc(ref, {
-      quantity: value,
-      price: value,
-      product: value,
-    });
+    // const ref = doc(db, "invoice", index.toString());
+    // await updateDoc(ref, {
+    //   quantity: value,
+    //   price: value,
+    //   product: value,
+    // });
   };
 
   //persisting target value individually for each change of input
   const onChangeItem = (index, type, value) => {
-    console.log(value, type)
     const newTable = tableItem.map((item, idx) => {
       if (idx === index)
         return {
@@ -90,7 +89,6 @@ function TableSheet() {
     setTableItem(newTable);
     updateWithNewTable(index);
   };
-  console.log(tableItem)
 
   //add a new item(new table row)
   const addCell = () => {
@@ -110,7 +108,7 @@ function TableSheet() {
     const dbItems = tableItem.map((item, index) => ({
       ...item,
       index,
-      prduct: item.product,
+      product: item.product,
       price: item.price,
       quantity: item.quantity,
       total: item.price * item.quantity,
@@ -119,6 +117,7 @@ function TableSheet() {
       async function addData() {
         const id = dbItems[dbItems.length - 1].index;
         const x = dbItems[dbItems.length - 1];
+        console.log(dbItems)
         await setDoc(doc(db, "invoice", id.toString()), {
           index: x.index,
           product: x.product,
@@ -127,8 +126,8 @@ function TableSheet() {
           total: x.total,
         });
       }
-      addData();
       try {
+        addData();
         console.log("added data success");
       } catch (error) {
         console.log("error firebase", error);
