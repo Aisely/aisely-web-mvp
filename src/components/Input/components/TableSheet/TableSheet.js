@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { nanoid } from "nanoid";
-import { collection, addDoc, updateDoc, setDoc, doc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../../../../firebase";
 
 function TableItems({ index, tableItem, onChangeItem , inputProduct, onChangeInput}) {
@@ -14,7 +14,7 @@ return (
             style={{ width: "50px" }} 
             type="text"
             required 
-            onChange={(e) => onChangeInput(index, e.target.value)}
+            onChange={(e) => onChangeItem(index, "product", e.target.value)}
             onBlur={(e) => onChangeInput(index, e.target.value)}
           />
         </td>
@@ -55,10 +55,9 @@ function TableSheet() {
 
   const onChangeInput = (index, value) => {
   if (document.activeElement === inputProduct.current) {
-    setProduct((t) => [...t, value])
+    // setProduct((t) => [...t, value])
+    console.log(index)
   } else {
-    const i = product[product.length - 1]
-    console.log(i)
   }
   }
 
@@ -69,16 +68,16 @@ function TableSheet() {
     } else {
       var price = type;
     }
-    const ref = doc(db, "invoice", index.toString());
-    await updateDoc(ref, {
-      quantity: value,
-      price: value,
-    });
+    // const ref = doc(db, "invoice", index.toString());
+    // await updateDoc(ref, {
+    //   quantity: value,
+    //   price: value,
+    //   product: value,
+    // });
   };
 
   //persisting target value individually for each change of input
   const onChangeItem = (index, type, value) => {
-    console.log(value, type)
     const newTable = tableItem.map((item, idx) => {
       if (idx === index)
         return {
@@ -109,7 +108,7 @@ function TableSheet() {
     const dbItems = tableItem.map((item, index) => ({
       ...item,
       index,
-      prduct: item.product,
+      product: item.product,
       price: item.price,
       quantity: item.quantity,
       total: item.price * item.quantity,
@@ -117,16 +116,18 @@ function TableSheet() {
     if (val.current) {
       async function addData() {
         const id = dbItems[dbItems.length - 1].index;
+        const x = dbItems[dbItems.length - 1];
+        console.log(dbItems)
         await setDoc(doc(db, "invoice", id.toString()), {
-          index: dbItems[dbItems.length - 1].index,
-          product: dbItems[dbItems.length - 1].product,
-          price: dbItems[dbItems.length - 1].price,
-          quantity: dbItems[dbItems.length - 1].quantity,
-          total: dbItems[dbItems.length - 1].total,
+          index: x.index,
+          product: x.product,
+          price: x.price,
+          quantity: x.quantity,
+          total: x.total,
         });
       }
-      // addData();
       try {
+        addData();
         console.log("added data success");
       } catch (error) {
         console.log("error firebase", error);
