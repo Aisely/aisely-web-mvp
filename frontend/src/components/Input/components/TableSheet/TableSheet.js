@@ -42,17 +42,18 @@ return (
 }
 
 function TableSheet() {
-  const [id, setId] = useState([]);
-  const [product, setProduct] = useState([]);
-  const [newProduct, setNewProduct] = useState([]);
+  const [ localStoreValues, setLocalStoreValues] = useState([])
+  const [ localStorageTable, setLocalStorageTable ] = useState([])
   const inputProduct = useRef(null);
-  const [tableItem, setTableItem] = useState([
+  const val = useRef(false); //preventing useEffect for the addData function to render at initial render
+  const val1 = useRef(false); //helps as a condition switcher. It will help with making sure the adding data to local storage functionality only runs once a table is added
+  const [ tableItem, setTableItem ] = useState([
     // {
     //   price: 0,
     //   quantity: 0,
     // },
   ]);
-  const val = useRef(false); //preventing useEffect for the addData function to render in
+  const data123 = useRef([])
 
   //persisting target value individually for each change of input (reupdating value algorithm)
   const onChangeItem = (index, type, value) => {
@@ -65,11 +66,25 @@ function TableSheet() {
       return item;
     });
     setTableItem(newTable);
+    setLocalStorageTable(newTable)
+    setLocalStoreValues(newTable)
   };
-  console.log(tableItem)
+
+  useEffect(() => {
+
+  if (val1.current) {
+    console.log('run')
+    const obj = localStorageTable.reduce(( t, value, index) => {
+      return {...t, [index]: value}
+    }, {})
+    window.localStorage.setItem("store", JSON.stringify(obj));
+  }
+  })
+  
 
   //add a new item(new table row)
   const addCell = () => {
+    val1.current = true
     setTableItem((t) => [
       ...t,
       {
@@ -79,7 +94,30 @@ function TableSheet() {
         total: 0,
       },
     ]);
+    setLocalStorageTable((t) => [
+      ...t,
+      {
+        product: '',
+        price: 0,
+        quantity: 0,
+        total: 0,
+      },
+    ]);
+    setLocalStoreValues((t) => [
+      ...t,
+      {
+        product: '',
+        price: 0,
+        quantity: 0,
+        total: 0,
+      },
+    ]);
   };
+
+  //generate doc
+  const generateDoc = () => {
+    window.localStorage.removeItem("store");
+  }
 
   //add table data to db
   useEffect(() => {
@@ -122,6 +160,44 @@ function TableSheet() {
     return acc;
   }, 0);
 
+  //local storage
+  useEffect(() => {
+    const data = JSON.parse(window.localStorage.getItem("store"));
+    
+    if (data) {
+      const data = JSON.parse(window.localStorage.getItem("store"));
+      const values = Object.values(data)
+      console.log(values)
+
+      const obj = localStoreValues.reduce(( t, value, index) => {
+        return {...t, [index]: value}
+      }, {})
+      console.log('obj', obj)
+      window.localStorage.setItem("store", JSON.stringify(obj));
+    
+    } else {
+
+        if (val1.current) {
+          console.log(localStorageTable)
+          const obj = localStorageTable.reduce(( t, value, index) => {
+            return {...t, [index]: value}
+          }, {})
+          window.localStorage.setItem("store", JSON.stringify(obj));
+          
+          const newData = JSON.parse(window.localStorage.getItem("store"));
+          
+          const values = Object.values(newData)
+          setLocalStoreValues(values)
+        
+        } else {
+
+        }
+        
+      }
+
+  }, [tableItem.length])
+    
+
   return (
     <div>
       <table style={{ width: "100vw", border: "1px solid black" }}>
@@ -131,7 +207,7 @@ function TableSheet() {
           <th>Qty.</th>
           <th>Total</th>
         </thead>
-        {tableItem.map((tableItem, index) => {
+        {localStoreValues.map((tableItem, index) => {
           return (
             <TableItems
               index={index}
@@ -144,6 +220,7 @@ function TableSheet() {
       </table>
       <button onClick={addCell}>add new item +</button>
       <div>Total: {totalPrice}</div>
+      <button onClick={generateDoc}>generate</button>
     </div>
   );
 }
