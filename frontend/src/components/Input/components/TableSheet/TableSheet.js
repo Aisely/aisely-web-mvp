@@ -1,19 +1,25 @@
 import React, { useEffect, useState, useRef } from "react";
 import { nanoid } from "nanoid";
-import { collection, addDoc, updateDoc, setDoc, doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  setDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "../../../../firebase";
 
-function TableItems({ index, tableItem, onChangeItem , inputProduct}) {
-  
-return (
+function TableItems({ index, tableItem, onChangeItem, inputProduct }) {
+  return (
     <>
       <tr>
         <td>
-          <input 
+          <input
             ref={inputProduct}
-            style={{ width: "50px" }} 
+            style={{ width: "50px" }}
             type="text"
-            required 
+            required
             onChange={(e) => onChangeItem(index, "product", e.target.value)}
           />
         </td>
@@ -33,31 +39,28 @@ return (
             onChange={(e) => onChangeItem(index, "quantity", e.target.value)}
           />
         </td>
-        <td>
-          {Number(tableItem.price) * Number(tableItem.quantity)}
-        </td>
+        <td>{Number(tableItem.price) * Number(tableItem.quantity)}</td>
       </tr>
     </>
   );
 }
 
 function TableSheet() {
-  const [ localStoreValues, setLocalStoreValues] = useState([])
-  const [ localStorageTable, setLocalStorageTable ] = useState([])
+  const [localStoreValues, setLocalStoreValues] = useState([]);
   const inputProduct = useRef(null);
   const val = useRef(false); //preventing useEffect for the addData function to render at initial render
   const val1 = useRef(false); //helps as a condition switcher. It will help with making sure the adding data to local storage functionality only runs once a table is added
-  const [ tableItem, setTableItem ] = useState([
+  const [tableItem, setTableItem] = useState([
     // {
     //   price: 0,
     //   quantity: 0,
     // },
   ]);
-  const data123 = useRef([])
+  const data123 = useRef([]);
 
   //persisting target value individually for each change of input (reupdating value algorithm)
   const onChangeItem = (index, type, value) => {
-    const newTable = tableItem.map((item, idx) => {
+    const newTable = localStoreValues.map((item, idx) => {
       if (idx === index)
         return {
           ...item,
@@ -66,38 +69,26 @@ function TableSheet() {
       return item;
     });
     setTableItem(newTable);
-    setLocalStorageTable(newTable)
-    setLocalStoreValues(newTable)
+    console.log(newTable);
+    setLocalStoreValues(newTable);
   };
 
   useEffect(() => {
-
-  if (val1.current) {
-    console.log('run')
-    const obj = localStorageTable.reduce(( t, value, index) => {
-      return {...t, [index]: value}
-    }, {})
-    window.localStorage.setItem("store", JSON.stringify(obj));
-  }
-  })
-  
+    if (val1.current) {
+      const obj = localStoreValues.reduce((t, value, index) => {
+        return { ...t, [index]: value };
+      }, {});
+      window.localStorage.setItem("store", JSON.stringify(obj));
+    }
+  });
 
   //add a new item(new table row)
   const addCell = () => {
-    val1.current = true
+    val1.current = true;
     setTableItem((t) => [
       ...t,
       {
-        product: '',
-        price: 0,
-        quantity: 0,
-        total: 0,
-      },
-    ]);
-    setLocalStorageTable((t) => [
-      ...t,
-      {
-        product: '',
+        product: "",
         price: 0,
         quantity: 0,
         total: 0,
@@ -106,7 +97,7 @@ function TableSheet() {
     setLocalStoreValues((t) => [
       ...t,
       {
-        product: '',
+        product: "",
         price: 0,
         quantity: 0,
         total: 0,
@@ -117,7 +108,7 @@ function TableSheet() {
   //generate doc
   const generateDoc = () => {
     window.localStorage.removeItem("store");
-  }
+  };
 
   //add table data to db
   useEffect(() => {
@@ -133,7 +124,7 @@ function TableSheet() {
       async function addDataToDb() {
         const id = dbItems[dbItems.length - 1].index;
         const x = dbItems[dbItems.length - 1];
-        console.log(dbItems)
+        console.log(dbItems);
         await setDoc(doc(db, "invoice", id.toString()), {
           index: x.index,
           product: x.product,
@@ -152,6 +143,7 @@ function TableSheet() {
       val.current = true;
       console.log("e no run");
     }
+    console.log("table itememeem", tableItem);
   }, [tableItem.length]);
 
   //total price of all products
@@ -163,40 +155,33 @@ function TableSheet() {
   //local storage
   useEffect(() => {
     const data = JSON.parse(window.localStorage.getItem("store"));
-    
+
     if (data) {
       const data = JSON.parse(window.localStorage.getItem("store"));
-      const values = Object.values(data)
-      console.log(values)
+      const values = Object.values(data);
 
-      const obj = localStoreValues.reduce(( t, value, index) => {
-        return {...t, [index]: value}
-      }, {})
-      console.log('obj', obj)
+      console.log("empty?", localStoreValues);
+      setLocalStoreValues(values);
+      const obj = values.reduce((t, value, index) => {
+        return { ...t, [index]: value };
+      }, {});
+
       window.localStorage.setItem("store", JSON.stringify(obj));
-    
     } else {
-
-        if (val1.current) {
-          console.log(localStorageTable)
-          const obj = localStorageTable.reduce(( t, value, index) => {
-            return {...t, [index]: value}
-          }, {})
-          window.localStorage.setItem("store", JSON.stringify(obj));
-          
-          const newData = JSON.parse(window.localStorage.getItem("store"));
-          
-          const values = Object.values(newData)
-          setLocalStoreValues(values)
-        
-        } else {
-
-        }
-        
+      if (val1.current) {
+        console.log("before localStoreValues:", localStoreValues);
+        const obj = localStoreValues.reduce((t, value, index) => {
+          return { ...t, [index]: value };
+        }, {});
+        console.log(" after localStoreValues:", localStoreValues);
+        window.localStorage.setItem("store", JSON.stringify(obj));
+        const newData = JSON.parse(window.localStorage.getItem("store"));
+        const values = Object.values(newData);
+        setLocalStoreValues(values);
+      } else {
       }
-
-  }, [tableItem.length])
-    
+    }
+  }, [tableItem.length]);
 
   return (
     <div>
