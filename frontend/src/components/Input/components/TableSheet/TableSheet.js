@@ -48,7 +48,6 @@ function TableItems({ index, tableItem, onChangeItem, inputProduct }) {
 function TableSheet() {
   const [localStoreValues, setLocalStoreValues] = useState([]);
   const inputProduct = useRef(null);
-  const val = useRef(false); //preventing useEffect for the addData function to render at initial render
   const val1 = useRef(false); //helps as a condition switcher. It will help with making sure the adding data to local storage functionality only runs once a table is added
   const [tableItem, setTableItem] = useState([
     // {
@@ -107,11 +106,11 @@ function TableSheet() {
 
   //generate doc
   const generateDoc = () => {
+    addData()
     window.localStorage.removeItem("store");
   };
 
-  //add table data to db
-  useEffect(() => {
+  const addData = () => {
     const dbItems = tableItem.map((item, index) => ({
       ...item,
       index,
@@ -120,31 +119,31 @@ function TableSheet() {
       quantity: item.quantity,
       total: item.price * item.quantity,
     }));
-    if (val.current) {
+    console.log("dbitems", dbItems)
       async function addDataToDb() {
-        const id = dbItems[dbItems.length - 1].index;
+        const id = dbItems[dbItems.length - 1].index + 1;
         const x = dbItems[dbItems.length - 1];
         console.log(dbItems);
         await setDoc(doc(db, "invoice", id.toString()), {
-          index: x.index,
-          product: x.product,
-          price: x.price,
-          quantity: x.quantity,
-          total: x.total,
+          // index: x.index,
+          // product: x.product,
+          // price: x.price,
+          // quantity: x.quantity,
+          // total: x.total,
+          invoice: dbItems
         });
       }
       try {
-        // addDataToDb();
+        addDataToDb();
         console.log("added data success");
       } catch (error) {
         console.log("error firebase", error);
       }
-    } else {
-      val.current = true;
-      console.log("e no run");
-    }
-    console.log("table itememeem", tableItem);
-  }, [tableItem.length]);
+        // window.location.reload()
+        setTimeout( () => {
+          window.location.reload()
+        }, 2000)
+  }
 
   //total price of all products
   const totalPrice = tableItem.reduce((acc, cur) => {

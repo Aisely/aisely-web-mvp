@@ -13,8 +13,7 @@ function App() {
     //   <MyDocument />
     //   <h1>HI</h1>
     // </PDFViewer>
-    <div>
-      <h1>d</h1>
+    <div> 
       <Input />
       <GeneratedDoc />
     </div>
