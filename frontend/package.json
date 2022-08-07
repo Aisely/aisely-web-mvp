@@ -13,19 +13,20 @@
     "buffer": "^6.0.3",
     "firebase": "^9.8.4",
     "nanoid": "^4.0.0",
+    "next": "^12.2.4",
     "pdf-lib": "^1.17.1",
     "process": "^0.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
     "redis": "^4.2.0",
     "stream-browserify": "^3.0.0",
     "util": "^0.12.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "next dev",
     "build": "react-scripts build",
+    "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
