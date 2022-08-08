@@ -1,13 +1,13 @@
 import React from 'react';
-import GeneratedDoc from '../common/components/GenerateDoc/GeneratedDoc';
-import Input from '../common/components/Input/Input';
+import Link from 'next/link'
+import Input from './input';
 
 function App() {
   return (
     <>
-      <Input />
-      <GeneratedDoc />
-      HEl
+      <Link href="/input"> 
+        <a>create doc</a>
+      </Link>
     </>
   );
 }

@@ -13,6 +13,7 @@ import { db } from "../../../../../firebase";
 function TableItems({ index, tableItem, onChangeItem, inputProduct }) {
   return (
     <>
+        {index + 1}
       <tr>
         <td>
           <input
@@ -77,7 +78,10 @@ function TableSheet() {
       const obj = localStoreValues.reduce((t, value, index) => {
         return { ...t, [index]: value };
       }, {});
-      window.localStorage.setItem("store", JSON.stringify(obj));
+
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem("store", JSON.stringify(obj));
+      }
     }
   });
 
@@ -107,7 +111,9 @@ function TableSheet() {
   //generate doc
   const generateDoc = () => {
     addData()
-    window.localStorage.removeItem("store");
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem("store");
+    }
   };
 
   const addData = () => {
@@ -125,11 +131,6 @@ function TableSheet() {
         const x = dbItems[dbItems.length - 1];
         console.log(dbItems);
         await setDoc(doc(db, "invoice", id.toString()), {
-          // index: x.index,
-          // product: x.product,
-          // price: x.price,
-          // quantity: x.quantity,
-          // total: x.total,
           invoice: dbItems
         });
       }
@@ -141,7 +142,9 @@ function TableSheet() {
       }
         // window.location.reload()
         setTimeout( () => {
-          window.location.reload()
+          if (typeof window !== "undefined") {
+            // window.location.reload()
+          }
         }, 2000)
   }
 
@@ -165,7 +168,9 @@ function TableSheet() {
         return { ...t, [index]: value };
       }, {});
 
-      window.localStorage.setItem("store", JSON.stringify(obj));
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem("store", JSON.stringify(obj));
+      }
     } else {
       if (val1.current) {
         console.log("before localStoreValues:", localStoreValues);
@@ -173,7 +178,9 @@ function TableSheet() {
           return { ...t, [index]: value };
         }, {});
         console.log(" after localStoreValues:", localStoreValues);
-        window.localStorage.setItem("store", JSON.stringify(obj));
+        if (typeof window !== "undefined") {
+          window.localStorage.setItem("store", JSON.stringify(obj));
+        }
         const newData = JSON.parse(window.localStorage.getItem("store"));
         const values = Object.values(newData);
         setLocalStoreValues(values);

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import styles from './clientdetails.module.css'
 
 function ClientDetails() {
   const [client, setClient] = useState({});
@@ -18,29 +17,29 @@ function ClientDetails() {
     <div>
         <div className='client-details-wrapper'>
             <form onSubmit={handleSubmit}>
-                <div className={styles.name}>
+                <div>
                   <label>Client Name</label>
-                <input type='text' id='name' name='name' value={client.name} onChange={handleChange} required></input>
+                <input type='text' id='name' name='name' onChange={handleChange} required></input>
                 </div>
-                <div className={styles.logo}>
+                <div>
                   <label>Logo</label>
-                  <input type='file' id='logo' name='logo' value={client.logo} onChange={handleChange} required></input>
+                  <input type='file' id='logo' name='logo' onChange={handleChange} required></input>
                 </div>
-                <div className={styles.phone}>
+                <div>
                   <label>Tel no.</label>
-                  <input type='tel' id='phone' name='phone' value={client.phone} autoComplete='true' required></input>
+                  <input type='tel' id='phone' name='phone' autoComplete='true' required></input>
                 </div>
-                <div className={styles.email}>
+                <div>
                   <label>Email</label>
-                  <input type='email' id='email' name='email' value={client.email} onChange={handleChange} required></input>
+                  <input type='email' id='email' name='email'  onChange={handleChange} required></input>
                 </div>
-                <div className={styles.address}>
+                <div>
                   <label>Address</label>
-                  <input type='text' id='address' name='address' value={client.address} onChange={handleChange} required></input>
+                  <input type='text' id='address' name='address' onChange={handleChange} required></input>
                 </div>
-                <div className={styles.null}>
+                <div>
                   <label>Null</label>
-                  <input type='text' id='null' name='null' value={client.null} onChange={handleChange} required></input>
+                  <input type='text' id='null' name='null' onChange={handleChange} required></input>
                 </div>
                 <button type='submit' className='small-btn'>next</button>
             </form>
