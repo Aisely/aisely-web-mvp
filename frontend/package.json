@@ -25,8 +25,8 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "react-scripts build",
-    "start": "react-scripts start",
+    "build": "next build",
+    "start": "next start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -47,5 +47,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/node": "^18.6.4",
+    "@types/react": "^18.0.16",
+    "typescript": "^4.7.4"
   }
 }

@@ -8,7 +8,7 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
-import { db } from "../../../../firebase";
+import { db } from "../../../../../firebase";
 
 function TableItems({ index, tableItem, onChangeItem, inputProduct }) {
   return (
