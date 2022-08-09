@@ -8,6 +8,7 @@ function App() {
       <Link href="/input"> 
         <a>create doc</a>
       </Link>
+      <div>...no documents created</div>
     </>
   );
 }

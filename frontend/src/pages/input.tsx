@@ -12,14 +12,8 @@ useEffect(() => {
 
   return (
     <div>
-      {/* <ClientDetails /> */}
+      <ClientDetails />
       { !isSSR && <TableSheet />}
-      <Link href={"/generate"}>
-        generate doc
-      </Link>
-      <Link href={"/"}>
-        back home
-      </Link>
     </div>
   )
 }

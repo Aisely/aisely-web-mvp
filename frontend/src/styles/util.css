@@ -6,7 +6,7 @@
     --gray: #E4E4E4;
     --white: #ffffff;
     --pink: #fa809a;
-    --cyan: rgb(224, 242, 241);
+    --cyan: rgb(37, 40, 40);
 
     --blue-rect: rgb(35, 70, 79);
     --text-inactive: rgb(52, 52, 52, 0.3);
@@ -306,20 +306,13 @@
     justify-content: center;
     align-items: center;
   }
-  a{
-    color: var(--white);
-    text-decoration: underline;
-    transition: .2s;
-  }
-  a:hover{  
-transform: scale(1.1);
-transition: .2s;
-  }
   .row-reverse{
     flex-direction: row-reverse;
   }
 
-
+#__next{
+  display: flex;
+}
 
 
 

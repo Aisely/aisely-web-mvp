@@ -41,7 +41,6 @@ function ClientDetails() {
                   <label>Null</label>
                   <input type='text' id='null' name='null' onChange={handleChange} required></input>
                 </div>
-                <button type='submit' className='small-btn'>next</button>
             </form>
         </div>
     </div>

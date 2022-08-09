@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useRouter } from 'next/router'
+import { useTableData } from "../../../../../contexts/TableDataContext";
 import { nanoid } from "nanoid";
 import {
   collection,
@@ -47,8 +49,10 @@ function TableItems({ index, tableItem, onChangeItem, inputProduct }) {
 }
 
 function TableSheet() {
+  const router = useRouter()
   const [localStoreValues, setLocalStoreValues] = useState([]);
   const inputProduct = useRef(null);
+  const { setLocalStoreContext } = useTableData()
   const val1 = useRef(false); //helps as a condition switcher. It will help with making sure the adding data to local storage functionality only runs once a table is added
   const [tableItem, setTableItem] = useState([
     // {
@@ -112,8 +116,11 @@ function TableSheet() {
   const generateDoc = () => {
     addData()
     if (typeof window !== "undefined") {
+      console.log(localStoreValues)
+      setLocalStoreContext(localStoreValues)
       window.localStorage.removeItem("store");
     }
+    router.push('/generate')
   };
 
   const addData = () => {
@@ -164,8 +171,9 @@ function TableSheet() {
 
       console.log("empty?", localStoreValues);
       setLocalStoreValues(values);
+      console.log(typeof values, "values")
       const obj = values.reduce((t, value, index) => {
-        return { ...t, [index]: value };
+        return { ...t as object, [index]: value };
       }, {});
 
       if (typeof window !== "undefined") {
@@ -209,9 +217,9 @@ function TableSheet() {
           );
         })}
       </table>
-      <button onClick={addCell}>add new item +</button>
+      <button  className="small-btn" style={{background: "var(--cyan)"}} onClick={addCell}>add new item +</button>
       <div>Total: {totalPrice}</div>
-      <button onClick={generateDoc}>generate</button>
+      <button className="small-btn" onClick={generateDoc}>generate</button>
     </div>
   );
 }
