@@ -32,7 +32,7 @@ function GeneratedDoc() {
           )
         })
       }
-      <Link href="/input"> 
+      <Link href="/editor"> 
         <a>create doc</a>
 
       </Link>

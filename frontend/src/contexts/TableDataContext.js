@@ -1,11 +1,11 @@
 import { createContext, useEffect, useState, useContext } from 'react'
 
-const tableDataContext = createContext()
+const tableDataContext = createContext();
 
 export function TableDataContextProvider({ children }) {
     const [localstore, setLocalstore] = useState()
     const [documents, setDocuments] = useState([])
-
+    
     function setLocalStoreContext(localstore) {
         setLocalstore(localstore)
     }

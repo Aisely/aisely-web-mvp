@@ -1,6 +1,6 @@
 import '../styles/util.css'
 import '../styles/app.css'
-import Layout from '../common/components/Layout'
+import Layout from '../layout/Layout'
 import { TableDataContextProvider } from '../contexts/TableDataContext'
 
 function MyApp({ Component, pageProps }) {

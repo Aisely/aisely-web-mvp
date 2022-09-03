@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from 'next/router'
-import { useTableData } from "../../../../../contexts/TableDataContext";
+import { useTableData } from "../../../../../../../contexts/TableDataContext";
 import { nanoid } from "nanoid";
 import {
   collection,
@@ -10,7 +10,7 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
-import { db } from "../../../../../firebase";
+import { db } from "../../../../../../../config/firebase";
 
 function TableItems({ index, tableItem, onChangeItem, inputProduct }) {
   return (
@@ -23,6 +23,7 @@ function TableItems({ index, tableItem, onChangeItem, inputProduct }) {
             style={{ width: "50px" }}
             type="text"
             required
+            value={tableItem.product}
             onChange={(e) => onChangeItem(index, "product", e.target.value)}
           />
         </td>
@@ -48,7 +49,7 @@ function TableItems({ index, tableItem, onChangeItem, inputProduct }) {
   );
 }
 
-function TableSheet() {
+function InvoiceForm() {
   const router = useRouter()
   const [localStoreValues, setLocalStoreValues] = useState([]);
   const inputProduct = useRef(null);
@@ -61,6 +62,11 @@ function TableSheet() {
     // },
   ]);
   const data123 = useRef([]);
+  const [isSSR, setIsSSR] = useState(true);
+
+    useEffect(() => {
+        setIsSSR(false);
+    }, []);
 
   //persisting target value individually for each change of input (reupdating value algorithm)
   const onChangeItem = (index, type, value) => {
@@ -73,7 +79,6 @@ function TableSheet() {
       return item;
     });
     setTableItem(newTable);
-    console.log(newTable);
     setLocalStoreValues(newTable);
   };
 
@@ -115,14 +120,15 @@ function TableSheet() {
   //generate doc
   const generateDoc = () => {
     addData()
-    if (typeof window !== "undefined") {
-      console.log(localStoreValues)
-      setLocalStoreContext(localStoreValues)
-      window.localStorage.removeItem("store");
-    }
     router.push('/generate')
   };
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setLocalStoreContext(localStoreValues)
+      // window.localStorage.removeItem("store");
+    }
+  },)
   const addData = () => {
     const dbItems = tableItem.map((item, index) => ({
       ...item,
@@ -132,20 +138,16 @@ function TableSheet() {
       quantity: item.quantity,
       total: item.price * item.quantity,
     }));
-    console.log("dbitems", dbItems)
       async function addDataToDb() {
         const id = dbItems[dbItems.length - 1].index + 1;
         const x = dbItems[dbItems.length - 1];
-        console.log(dbItems);
         await setDoc(doc(db, "invoice", id.toString()), {
           invoice: dbItems
         });
       }
       try {
         addDataToDb();
-        console.log("added data success");
       } catch (error) {
-        console.log("error firebase", error);
       }
         // window.location.reload()
         setTimeout( () => {
@@ -169,9 +171,7 @@ function TableSheet() {
       const data = JSON.parse(window.localStorage.getItem("store"));
       const values = Object.values(data);
 
-      console.log("empty?", localStoreValues);
       setLocalStoreValues(values);
-      console.log(typeof values, "values")
       const obj = values.reduce((t, value, index) => {
         return { ...t as object, [index]: value };
       }, {});
@@ -181,11 +181,9 @@ function TableSheet() {
       }
     } else {
       if (val1.current) {
-        console.log("before localStoreValues:", localStoreValues);
         const obj = localStoreValues.reduce((t, value, index) => {
           return { ...t, [index]: value };
         }, {});
-        console.log(" after localStoreValues:", localStoreValues);
         if (typeof window !== "undefined") {
           window.localStorage.setItem("store", JSON.stringify(obj));
         }
@@ -198,30 +196,32 @@ function TableSheet() {
   }, [tableItem.length]);
 
   return (
-    <div>
-      <table style={{ width: "100vw", border: "1px solid black" }}>
-        <thead>
-          <th>Item Description</th>
-          <th>Price</th>
-          <th>Qty.</th>
-          <th>Total</th>
-        </thead>
-        {localStoreValues.map((tableItem, index) => {
-          return (
-            <TableItems
-              index={index}
-              tableItem={tableItem}
-              onChangeItem={onChangeItem}
-              inputProduct={inputProduct}
-            />
-          );
-        })}
-      </table>
-      <button  className="small-btn" style={{background: "var(--cyan)"}} onClick={addCell}>add new item +</button>
-      <div>Total: {totalPrice}</div>
-      <button className="small-btn" onClick={generateDoc}>generate</button>
-    </div>
+    <>
+      { !isSSR &&   <div style={{color: "white", background: "#252828", width: "50%"}}>
+        <table style={{ width: "100%", border: "1px solid black" }}>
+          <thead>
+            <th>Item Description</th>
+            <th>Price</th>
+            <th>Qty.</th>
+            <th>Total</th>
+          </thead>
+          {localStoreValues.map((tableItem, index) => {
+            return (
+              <TableItems
+                index={index}
+                tableItem={tableItem}
+                onChangeItem={onChangeItem}
+                inputProduct={inputProduct}
+              />
+            );
+          })}
+        </table>
+        <button  className="small-btn" style={{background: ""}} onClick={addCell}>add new item +</button>
+        <div>Total: {totalPrice}</div>
+        {/* <button className="small-btn" onClick={generateDoc}>generate</button> */}
+      </div>}
+    </>
   );
 }
 
-export default TableSheet;
+export default InvoiceForm;

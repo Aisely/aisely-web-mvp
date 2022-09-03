@@ -1,14 +1,26 @@
 import React from 'react';
 import Link from 'next/link'
-import Input from './input';
-
 function App() {
   return (
     <>
-      <Link href="/input"> 
+      <h1>Welcome back Paul</h1>
+      <Link href="/create"> 
         <a>create doc</a>
       </Link>
-      <div>...no documents created</div>
+      <div>
+        {/* <table>
+          <thead>
+            <th>Client Name</th>
+            <th>docs created</th>
+            <th>last modified</th>
+          </thead>
+          <tr>
+            <td>Ugo's Shipping ltd</td>
+            <td>3</td>
+            <td>3 days ago</td>
+          </tr>
+        </table> */}
+      </div>
     </>
   );
 }

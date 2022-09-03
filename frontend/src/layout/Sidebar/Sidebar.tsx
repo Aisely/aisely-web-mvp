@@ -7,10 +7,10 @@ function Sidebar() {
       <h1>User</h1>
       <ul>
         <li>
-          <Link href={"/input"}>create doc</Link>
+          <Link href={"/create"}>create doc</Link>
         </li>
         <li>
-          <Link href={"/"}>documents</Link>
+          <Link href={"/"}>clients</Link>
         </li>
         <li>
           <Link href={"/profile"}>profile</Link>
